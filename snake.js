@@ -12,6 +12,9 @@ let foodY;
 let dx = 15; 
 let dy = 0;
 let score = 0; 
+let changingDirection; 
+
+
 const gameCanvas = document.getElementById("gameCanvas");
 const ctx = gameCanvas.getContext("2d");
  
@@ -30,8 +33,8 @@ function drawSnake() {
 }
 
 function moveSnake() {
+    
     const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-
     snake.unshift(head);
     const snakeAteFood = head.x == foodX && head.y == foodY; 
     if (snakeAteFood){
@@ -57,7 +60,10 @@ function changeDirection(event){
     const RIGHT_KEY = 39; 
     const UP_KEY = 38;
     const DOWN_KEY = 40; 
-     
+
+    if (changingDirection)
+        return;
+    changingDirection = true; 
 
     switch (event.keyCode) {
         case LEFT_KEY:
@@ -135,11 +141,12 @@ function main() {
     }
     
     setTimeout(function onTick() {
+        changingDirection = false;
         clearCanvas();
         drawFood();
         moveSnake(); 
         drawSnake();
         main(); 
-    }, 100);  
+    }, 80);  
      
 }
